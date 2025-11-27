@@ -11,12 +11,10 @@ jobs:
   test:
     env:
       MONGODB_CLUSTER_ADDRESS: cluster1.ka3txog.mongodb.net
-      MONGODB_USERNAME: sameer
-      MONGODB_PASSWORD: gvuYKRgLdElSD1BM 
+      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
     runs-on: ubuntu-latest
-    outputs:    # THIS WILL BE USED IN THE NEXT DEPLOY JOB
-      mongodb-username: ${{ env.MONGODB_USERNAME }}
     steps:
       - name: Get Code
         uses: actions/checkout@v4
@@ -33,12 +31,11 @@ jobs:
         run: npm test
       - name: Output information
         run: |
-          echo "MONGODB_USERNAME:${{ env.MONGODB_USERNAME }}"
+          echo "Tests completed successfully"
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Output information
-        run: |        
-          echo "MONGODB_USERNAME: ${{ needs.test.outputs.mongodb-username }}" # output from test job
+        run: |
           echo "MONGODB_DB_NAME:  $MONGODB_DB_NAME"
