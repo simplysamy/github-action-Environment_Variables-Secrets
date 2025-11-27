@@ -10,9 +10,10 @@ env:
 jobs:
   test:
     env:
-      MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
-      MONGODB_USERNAME: root
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_CLUSTER_ADDRESS: cluster1.ka3txog.mongodb.net
+      MONGODB_USERNAME: sameer
+      MONGODB_PASSWORD: gvuYKRgLdElSD1BM 
+      PORT: 8080
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -25,15 +26,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run server
-        run: npm start & npx wait-on http://127.0.0.1:XYZ
+        run: npm start & npx wait-on http://127.0.0.1:$PORT
       - name: Run tests
         run: npm test
       - name: Output information
-        run: echo "..."
+        run: echo "MONGODB_USERNAME:${{ env.MONGODB_USERNAME }}"
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Output information
         run: |        
-          echo "..."
+          echo "MONGODB_USERNAME:${{ env.MONGODB_USERNAME }}"
+          echo "MONGODB_DB_NAME=  $MONGODB_DB_NAME  "
